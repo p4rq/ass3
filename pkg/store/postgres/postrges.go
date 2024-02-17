@@ -19,22 +19,6 @@ func init() {
 	}
 }
 
-//  Env to pg params
-// 	"PGHOST":               "host",
-// 	"PGPORT":               "port",
-// 	"PGDATABASE":           "database",
-// 	"PGUSER":               "user",
-// 	"PGPASSWORD":           "password",
-// 	"PGPASSFILE":           "passfile",
-// 	"PGAPPNAME":            "application_name",
-// 	"PGCONNECT_TIMEOUT":    "connect_timeout",
-// 	"PGSSLMODE":            "sslmode",
-// 	"PGSSLKEY":             "sslkey",
-// 	"PGSSLCERT":            "sslcert",
-// 	"PGSSLROOTCERT":        "sslrootcert",
-// 	"PGTARGETSESSIONATTRS": "target_session_attrs",
-// 	"PGSERVICE":            "service",
-// 	"PGSERVICEFILE":        "servicefile",
 func initDefaultEnv() error {
 	if len(os.Getenv("PGHOST")) == 0 {
 		if err := os.Setenv("PGHOST", "postgres"); err != nil {
