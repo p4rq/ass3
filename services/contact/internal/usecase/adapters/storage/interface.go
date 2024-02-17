@@ -24,13 +24,13 @@ type Contact interface {
 type ContactReader interface {
 	ListContact(parameter queryParameter.QueryParameter) ([]*contact.Contact, error)
 	ReadContactByID(ID uuid.UUID) (response *contact.Contact, err error)
-	CountContact( /*Тут можно передавать фильтр*/ ) (uint64, error)
+	CountContact() (uint64, error)
 }
 
 type Group interface {
 	CreateGroup(group *group.Group) (*group.Group, error)
 	UpdateGroup(ID uuid.UUID, updateFn func(group *group.Group) (*group.Group, error)) (*group.Group, error)
-	DeleteGroup(ID uuid.UUID /*Тут можно передавать фильтр*/) error
+	DeleteGroup(ID uuid.UUID) error
 
 	GroupReader
 	ContactInGroup
@@ -39,7 +39,7 @@ type Group interface {
 type GroupReader interface {
 	ListGroup(parameter queryParameter.QueryParameter) ([]*group.Group, error)
 	ReadGroupByID(ID uuid.UUID) (*group.Group, error)
-	CountGroup( /*Тут можно передавать фильтр*/ ) (uint64, error)
+	CountGroup() (uint64, error)
 }
 
 type ContactInGroup interface {

@@ -11,7 +11,7 @@ import (
 type Contact interface {
 	Create(contacts ...*contact.Contact) ([]*contact.Contact, error)
 	Update(contactUpdate contact.Contact) (*contact.Contact, error)
-	Delete(ID uuid.UUID /*Тут можно передавать фильтр*/) error
+	Delete(ID uuid.UUID) error
 
 	ContactReader
 }
@@ -19,13 +19,13 @@ type Contact interface {
 type ContactReader interface {
 	List(parameter queryParameter.QueryParameter) ([]*contact.Contact, error)
 	ReadByID(ID uuid.UUID) (response *contact.Contact, err error)
-	Count( /*Тут можно передавать фильтр*/ ) (uint64, error)
+	Count() (uint64, error)
 }
 
 type Group interface {
 	Create(groupCreate *group.Group) (*group.Group, error)
 	Update(groupUpdate *group.Group) (*group.Group, error)
-	Delete(ID uuid.UUID /*Тут можно передавать фильтр*/) error
+	Delete(ID uuid.UUID) error
 
 	GroupReader
 	ContactInGroup
@@ -34,7 +34,7 @@ type Group interface {
 type GroupReader interface {
 	List(parameter queryParameter.QueryParameter) ([]*group.Group, error)
 	ReadByID(ID uuid.UUID) (*group.Group, error)
-	Count( /*Тут можно передавать фильтр*/ ) (uint64, error)
+	Count() (uint64, error)
 }
 
 type ContactInGroup interface {
