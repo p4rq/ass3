@@ -10,7 +10,7 @@ import (
 
 type Contact interface {
 	Create(contacts ...*contact.Contact) ([]*contact.Contact, error)
-	Update(contact contact.Contact) (*contact.Contact, error)
+	Update(contactUpdate contact.Contact) (*contact.Contact, error)
 	Delete(ID uuid.UUID /*Тут можно передавать фильтр*/) error
 
 	ContactReader
@@ -23,8 +23,8 @@ type ContactReader interface {
 }
 
 type Group interface {
-	Create(domainGroup *group.Group) (*group.Group, error)
-	Update(group *group.Group) (*group.Group, error)
+	Create(groupCreate *group.Group) (*group.Group, error)
+	Update(groupUpdate *group.Group) (*group.Group, error)
 	Delete(ID uuid.UUID /*Тут можно передавать фильтр*/) error
 
 	GroupReader
