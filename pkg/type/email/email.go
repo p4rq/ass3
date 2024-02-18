@@ -40,11 +40,11 @@ func (e Email) IsEmpty() bool {
 	return len(strings.TrimSpace(e.String())) == 0
 }
 
-func (e *Email) MarshalJSON() ([]byte, error) {
+func (e *Email) ConvertEmailToJSON() ([]byte, error) {
 	return []byte(`"` + e.value + `"`), nil
 }
 
-func (e *Email) UnmarshalJSON(bin []byte) error {
+func (e *Email) ConvertJSONToEmail(bin []byte) error {
 	str := string(bin)
 	if strings.HasPrefix(str, `"`) {
 		str = str[1:]

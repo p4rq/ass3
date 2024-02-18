@@ -20,34 +20,20 @@ func init() {
 }
 
 func initDefaultEnv() error {
-	if len(os.Getenv("PGHOST")) == 0 {
-		if err := os.Setenv("PGHOST", "postgres"); err != nil {
-			return errors.WithStack(err)
-		}
+	envVars := map[string]string{
+		"PGHOST":     "postgres",
+		"PGPORT":     "5432",
+		"PGDATABASE": "postgres",
+		"PGUSER":     "postgres",
+		"PGPASSWORD": "password",
+		"PGSSLMODE":  "disable",
 	}
-	if len(os.Getenv("PGPORT")) == 0 {
-		if err := os.Setenv("PGPORT", "5432"); err != nil {
-			return errors.WithStack(err)
-		}
-	}
-	if len(os.Getenv("PGDATABASE")) == 0 {
-		if err := os.Setenv("PGDATABASE", "postgres"); err != nil {
-			return errors.WithStack(err)
-		}
-	}
-	if len(os.Getenv("PGUSER")) == 0 {
-		if err := os.Setenv("PGUSER", "postgres"); err != nil {
-			return errors.WithStack(err)
-		}
-	}
-	if len(os.Getenv("PGPASSWORD")) == 0 {
-		if err := os.Setenv("PGPASSWORD", "password"); err != nil {
-			return errors.WithStack(err)
-		}
-	}
-	if len(os.Getenv("PGSSLMODE")) == 0 {
-		if err := os.Setenv("PGSSLMODE", "disable"); err != nil {
-			return errors.WithStack(err)
+
+	for key, value := range envVars {
+		if len(os.Getenv(key)) == 0 {
+			if err := os.Setenv(key, value); err != nil {
+				return errors.WithStack(err)
+			}
 		}
 	}
 	return nil
@@ -69,35 +55,23 @@ type Settings struct {
 func (s Settings) toDSN() string {
 	var args []string
 
-	if len(s.Host) > 0 {
-		args = append(args, fmt.Sprintf("host=%s", s.Host))
+	addArg := func(key, value string) {
+		if len(value) > 0 {
+			args = append(args, fmt.Sprintf("%s=%s", key, value))
+		}
 	}
 
-	if s.Port > 0 {
-		args = append(args, fmt.Sprintf("port=%d", s.Port))
-	}
-
-	if len(s.Database) > 0 {
-		args = append(args, fmt.Sprintf("dbname=%s", s.Database))
-	}
-
-	if len(s.User) > 0 {
-		args = append(args, fmt.Sprintf("user=%s", s.User))
-	}
-
-	if len(s.Password) > 0 {
-		args = append(args, fmt.Sprintf("password=%s", s.Password))
-	}
-
-	if len(s.SSLMode) > 0 {
-		args = append(args, fmt.Sprintf("sslmode=%s", s.SSLMode))
-	}
+	addArg("host", s.Host)
+	addArg("port", fmt.Sprintf("%d", s.Port))
+	addArg("dbname", s.Database)
+	addArg("user", s.User)
+	addArg("password", s.Password)
+	addArg("sslmode", s.SSLMode)
 
 	return strings.Join(args, " ")
 }
 
 func New(settings Settings) (*Store, error) {
-
 	config, err := pgxpool.ParseConfig(settings.toDSN())
 	if err != nil {
 		return nil, errors.WithStack(err)

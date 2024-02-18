@@ -1,13 +1,18 @@
 package phoneNumber
 
+import (
+	"strings"
+	"unicode"
+)
+
 func getNumbers(input string) string {
-	var number string
+	var builder strings.Builder
 
 	for _, t := range input {
-		if t >= 48 && t <= 57 { // 48 - 57 in ASCII this numbers   0-9
-			number += string(t)
+		if unicode.IsDigit(t) {
+			builder.WriteRune(t)
 		}
 	}
 
-	return number
+	return builder.String()
 }
