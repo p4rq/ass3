@@ -10,9 +10,12 @@ import (
 )
 
 func init() {
+	viper.SetConfigName(".env")
+	viper.SetConfigType("dotenv")
+	viper.AddConfigPath(".")
+	viper.AutomaticEnv()
+
 	viper.SetDefault("HTTP_PORT", 80)
-	viper.SetDefault("HTTP_HOST", "127.0.0.1")
-	viper.SetDefault("IS_PRODUCTION", "false")
 }
 
 type Delivery struct {
@@ -44,7 +47,7 @@ func (d *Delivery) SetOptions(options Options) {
 }
 
 func (d *Delivery) Run() error {
-	return d.router.Run(fmt.Sprintf("%s:%d", viper.GetString("HTTP_HOST"), uint16(viper.GetUint("HTTP_PORT"))))
+	return d.router.Run(fmt.Sprintf(":%d", uint16(viper.GetUint("HTTP_PORT"))))
 }
 
 func checkAuth(c *gin.Context) {
